@@ -1,27 +1,57 @@
-# Real-Time Image Captioning on Raspberry Pi Using ONNX
+# 🖼️ Image Captioning from Scratch using Transformers
 
-## Project Overview
+This project showcases an **image captioning model built entirely from scratch using PyTorch**, where **every key component of the Transformer decoder was manually implemented** — no reliance on pre-trained transformer models or libraries like Hugging Face Transformers for modeling.
 
-This project demonstrates an end-to-end pipeline for **automatic image captioning** using deep learning, optimized for deployment on affordable hardware—the Raspberry Pi 4B. Leveraging PyTorch for model development and ONNX for efficient cross-platform inference, this system takes a static input image and produces a human-readable caption. The project highlights the synergy of computer vision and natural language processing in embedded systems.
+It’s a complete end-to-end pipeline using the **MS COCO dataset**, integrating **computer vision and natural language processing** to generate human-like captions for images. The goal was to **deepen understanding of attention mechanisms, sequence modeling, and multimodal learning** by implementing the full architecture manually.
 
 ---
 
+## 🚀 What This Project Does
 
-## Workflow
+- Takes an input image and generates a natural-language caption.
+- Uses a CNN (e.g., ResNet) to encode the image into dense feature vectors.
+- Uses a **custom-built Transformer-based decoder** to generate captions word-by-word.
+- Trains and evaluates the full model on the **MS COCO** dataset using **cross-entropy loss** and **batch evaluation**.
+- Uses **Hugging Face tokenizers** for text preprocessing and vocab management.
 
-### 1. Model Development (on PC)
-- **Model**: Transformer-based encoder-decoder for image captioning
-- **Training**: Uses PyTorch, COCO dataset, and HuggingFace tokenizer
-- **Scripts**: `models/`, `train.py`, `generate_caption.py`
+---
 
-### 2. Export to ONNX (on PC)
-- **Why**: ONNX makes the model hardware-agnostic, smaller, and faster for inference
-- **How**: Script `export_to_onnx.py` exports the trained PyTorch model to `captioning_model.onnx`
+## 🧠 Key Components
 
-### 3. Raspberry Pi Deployment
-- **Copy**: Transfer `captioning_model.onnx` and `onnx_caption_inference.py` to the Pi
-- **Install**: Required Python libraries (`onnxruntime`, `transformers`, `Pillow`)
-- **Usage**: Provide an image file and run the inference script; receive a caption in the terminal
+1. ✅ **Custom Data Loader**  
+   Loads and processes image–caption pairs from the MS COCO dataset, sampling one caption per image and applying transformations.
 
+2. ✅ **CNN-Based Encoder**  
+   Extracts fixed-size feature representations from images using a pretrained CNN backbone (e.g., ResNet-50), removing the final classification layer.
+
+3. ✅ **Transformer Decoder (Manual Implementation)**  
+   Built entirely from scratch based on the “Attention Is All You Need” paper. Includes:
+   - Scaled Dot-Product Attention
+   - Multi-Head Attention
+   - Positional Encoding
+   - Masked Self-Attention
+   - Add & Norm layers
+   - Feedforward layers
+
+4. ✅ **Caption Tokenization with Hugging Face**  
+   Utilized `transformers` tokenizers for caption preprocessing, padding, and numericalization, ensuring compatibility with vocabulary generation.
+
+5. ✅ **Training Loop & Evaluation**  
+   - Implemented custom training loop with teacher forcing and masking
+   - Cross-entropy loss with padding token ignored
+   - Evaluated using batch-based inference and BLEU scores
+
+---
+
+## 🔍 Why This Project Matters
+
+Unlike most image captioning projects that use pretrained transformers or encoder-decoder libraries, **this project implements the full Transformer decoder logic from the ground up** to gain a deeper understanding of:
+
+- How attention and sequence modeling work internally
+- The integration of image features with language generation
+- Handling multimodal data in a training loop
+- Challenges in training transformers from scratch
+
+---
 
 
